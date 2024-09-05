@@ -1,6 +1,7 @@
 1. Create a pod with name tester-cka02-svcn in dev-cka02-svcn namespace with image registry.k8s.io/e2e-test-images/jessie-dnsutils:1.3. Make sure to use command sleep 3600 with restart policy set to Always .
    Once the tester-cka02-svcn pod is running, store the output of the command nslookup kubernetes.default from tester pod into the file /root/dns_output on student-node.
 
+```markdown
 kubectl create ns dev-cka02-svcn
 kubectl apply -f - << EOF
 apiVersion: v1
@@ -27,6 +28,7 @@ Looks like something is broken at the moment, if we observe the kube-system name
 kubectl scale deployment -n kube-system coredns --replicas=2
 
 kubectl exec -n dev-cka02-svcn -i -t tester-cka02-svcn -- nslookup kubernetes.default >> /root/dns_output
+```
 
 2. Run a pod called alpine-sleeper-cka15-arch using the alpine image in the default namespace that will sleep for 7200 seconds.
 
