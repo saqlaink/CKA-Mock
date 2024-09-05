@@ -267,6 +267,7 @@ Dig into the logs to identify the issue and make sure it is resolved.
 
 Note: You will not be able to access this app directly from the student-node but you can exec into the purple-app-cka27-trb pod to check.
 
+```markdown
 Solution
 Check the purple-curl-cka27-trb pod logs
 
@@ -300,3 +301,4 @@ You will see Thank you for using nginx. in the output now.
 - Volume binding mode should be WaitForFirstConsumer.
 
 - Volume expansion should be enabled.
+```
