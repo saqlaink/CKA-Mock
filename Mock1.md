@@ -229,6 +229,7 @@ HTTP/1.1 200 OK
 
 18. It appears that the black-cka25-trb deployment in cluster1 isn't up to date. While listing the deployments, we are currently seeing 0 under the UP-TO-DATE section for this deployment. Troubleshoot, fix and make sure that this deployment is up to date.
 
+```markdown
 Check current status of the deployment
 
 kubectl get deploy
@@ -254,6 +255,7 @@ Check again the status of the deployment
 kubectl get deploy
 
 It should be good now.
+```
 
 19. The purple-app-cka27-trb pod is an nginx based app on the container port 80. This app is exposed within the cluster using a ClusterIP type service called purple-svc-cka27-trb.
 
