@@ -158,20 +158,21 @@ Finally save the changes.
 15. Create a new deployment called ocean-tv-wl09 in the default namespace using the image kodekloud/webapp-color:v1.
     Use the following specs for the deployment:
 
-1. Replica count should be 3.
+    Replica count should be 3.
 
-1. Set the Max Unavailable to 40% and Max Surge to 55%.
+    Set the Max Unavailable to 40% and Max Surge to 55%.
 
-1. Create the deployment and ensure all the pods are ready.
+    Create the deployment and ensure all the pods are ready.
 
-1. After successful deployment, upgrade the deployment image to kodekloud/webapp-color:v2 and inspect the deployment rollout status.
+    After successful deployment, upgrade the deployment image to kodekloud/webapp-color:v2 and inspect the deployment rollout status.
 
-1. Check the rolling history of the deployment and on the student-node, save the current revision count number to the /opt/revision-count.txt file.
+    Check the rolling history of the deployment and on the student-node, save the current revision count number to the /opt/revision-count.txt file.
 
-1. Finally, perform a rollback and revert back the deployment image to the older version.
+    Finally, perform a rollback and revert back the deployment image to the older version.
 
-1. There is a script located at /root/pod-cka26-arch.sh on the student-node. Update this script to add a command to filter/display the label with value component of the pod called kube-apiserver-cluster1-controlplane (on cluster1) using jsonpath.
+16. There is a script located at /root/pod-cka26-arch.sh on the student-node. Update this script to add a command to filter/display the label with value component of the pod called kube-apiserver-cluster1-controlplane (on cluster1) using jsonpath.
 
+```markdown
 Update pod-cka26-arch.sh script:
 
 student-node ~ ➜ vi pod-cka26-arch.sh
@@ -179,6 +180,7 @@ student-node ~ ➜ vi pod-cka26-arch.sh
 Add below command in it:
 
 kubectl --context cluster1 get pod -n kube-system kube-apiserver-cluster1-controlplane -o jsonpath='{.metadata.labels.component}'
+```
 
 17. There is a deployment nginx-deployment-cka04-svcn in cluster3 which is exposed using service nginx-service-cka04-svcn.
 
