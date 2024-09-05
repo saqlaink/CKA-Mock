@@ -90,6 +90,7 @@ After rolling the deployment back, on the controlplane node, save the image curr
 
 You can SSH into the cluster1 using ssh cluster1-controlplane command.
 
+```markdown
 Check the status of the pod: -
 kubectl get pods -n dev-wl07
 
@@ -112,6 +113,7 @@ And increase the replica count to the 5 with help of kubectl scale command: -
 kubectl scale deploy -n dev-wl07 webapp-wl07 --replicas=5
 
 Verify it by running the command: kubectl get deploy -n dev-wl07
+```
 
 14. The db-deployment-cka05-trb deployment is having 0 out of 1 PODs ready.
 
