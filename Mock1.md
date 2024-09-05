@@ -183,17 +183,13 @@ kubectl --context cluster1 get pod -n kube-system kube-apiserver-cluster1-contro
 ```
 
 17. There is a deployment nginx-deployment-cka04-svcn in cluster3 which is exposed using service nginx-service-cka04-svcn.
+    Create an ingress resource nginx-ingress-cka04-svcn to load balance the incoming traffic with the following specifications:
+    pathType: Prefix and path: /
+    Backend Service Name: nginx-service-cka04-svcn
+    Backend Service Port: 80
+    ssl-redirect is set to false
 
-Create an ingress resource nginx-ingress-cka04-svcn to load balance the incoming traffic with the following specifications:
-
-pathType: Prefix and path: /
-
-Backend Service Name: nginx-service-cka04-svcn
-
-Backend Service Port: 80
-
-ssl-redirect is set to false
-
+```markdown
 Now apply the ingress resource with the given requirements:
 
 kubectl apply -f - << EOF
@@ -229,6 +225,7 @@ student-node ~ ➜ ssh cluster3-controlplane
 cluster3-controlplane:~# curl -I 172.25.0.11
 HTTP/1.1 200 OK
 ...
+```
 
 18. It appears that the black-cka25-trb deployment in cluster1 isn't up to date. While listing the deployments, we are currently seeing 0 under the UP-TO-DATE section for this deployment. Troubleshoot, fix and make sure that this deployment is up to date.
 
