@@ -116,9 +116,9 @@ Verify it by running the command: kubectl get deploy -n dev-wl07
 ```
 
 14. The db-deployment-cka05-trb deployment is having 0 out of 1 PODs ready.
+    Figure out the issues and fix the same but make sure that you do not remove any DB related environment variables from the deployment/pod.
 
-Figure out the issues and fix the same but make sure that you do not remove any DB related environment variables from the deployment/pod.
-
+```markdown
 Find out the name of the DB POD:
 kubectl get pod
 
@@ -153,6 +153,7 @@ You will notice that some of the keys are different what are reffered in the dep
 Change some env keys: db to database , db-user to username and db-password to password
 Change a secret reference: db-user-cka05-trb to db-user-pass-cka05-trb
 Finally save the changes.
+```
 
 15. Create a new deployment called ocean-tv-wl09 in the default namespace using the image kodekloud/webapp-color:v1.
     Use the following specs for the deployment:
