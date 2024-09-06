@@ -88,6 +88,25 @@ This command should return yes, confirming that the service account can now get 
 
 Inspect the revision 2 of this deployment and store the image name that was used in this revision in the /opt/trace-wl08-revision-book.txt file on the student-node.
 
+ANS:
+List the deployments in test-wl08 namespace as follows: -
+
+kubectl get deploy -n test-wl08
+
+Run the following command to check the revisions of the deployment called trace-wl08:-
+
+kubectl rollout history deployment -n test-wl08 trace-wl08
+
+Inspect the revision 2 by using the --revision option: -
+
+kubectl rollout history deployment -n test-wl08 trace-wl08 --revision=2
+
+Under the Containers section, you will see the image name.
+
+On the student-node, save that image name in the given file /opt/trace-wl08-revision-book.txt:
+
+echo "busybox:1.35" > /opt/trace-wl08-revision-book.txt
+
 5. We have created a service account called red-sa-cka23-arch, a cluster role called red-role-cka23-arch and a cluster role binding called red-role-binding-cka23-arch.
 
 Identify the permissions of this service account and write down the answer in file /opt/red-sa-cka23-arch in format resource:pods|verbs:get,list on student-node
@@ -122,6 +141,54 @@ Finally, create a persistent volume claim called orange-pvc-cka07-str as per the
 
 - The volume should be orange-pv-cka07-str.
 
+ANS:
+
+```
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: orange-stc-cka07-str
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: orange-pv-cka07-str
+spec:
+  capacity:
+    storage: 150Mi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: orange-stc-cka07-str
+  local:
+    path: /opt/orange-data-cka07-str
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - cluster1-controlplane
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: orange-pvc-cka07-str
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: orange-stc-cka07-str
+  volumeName: orange-pv-cka07-str
+  resources:
+    requests:
+      storage: 128Mi
+```
+
 7. There is a pod called pink-pod-cka16-trb created in the default namespace in cluster4. This app runs on port tcp/5000 and it is to be exposed to end-users using an ingress resource called pink-ing-cka16-trb in such a way that it is supposed to be accessible using the command: curl http://kodekloud-pink.app on cluster4-controlplane host. There is an ingress.yaml file under root folder in cluster4-controlplane create an ingress resource by following the command and continue with task.
 
 kubectl create -f ingress.yaml
@@ -129,6 +196,44 @@ kubectl create -f ingress.yaml
 However, even after creating the ingress resource, it is not working. Troubleshoot and fix this issue, making any necessary to the objects.
 
 Note: You should be able to ssh into the cluster4-controlplane using ssh cluster4-controlplane command.
+
+ANS:
+SSH into the cluster4-controlplane host
+ssh cluster4-controlplane
+
+create ingress with the given yaml file.ingress.yaml
+
+kubectl create -f ingress.yaml
+
+Now try to access the app.
+
+curl kodekloud-pink.app
+
+You must be getting 503 Service Temporarily Unavailable error.
+Let's look into the service:
+
+kubectl edit svc pink-svc-cka16-trb
+
+Under ports: change protocol: UDP to protocol: TCP
+Try to access the app again
+
+curl kodekloud-pink.app
+
+You must be getting curl: (6) Could not resolve host: example.com error, from the error we can see that its not able to resolve example.com host which indicated that it can be some issue related to the DNS. As we know CoreDNS is a DNS server that can serve as the Kubernetes cluster DNS, so it can be something related to CoreDNS.
+
+Let's check if we have CoreDNS deployment running:
+
+kubectl get deploy -n kube-system
+
+You will see that for coredns all relicas are down, you will see 0/0 ready pods. So let's scale up this deployment.
+
+kubectl scale --replicas=2 deployment coredns -n kube-system
+
+Once CoreDNS is up let's try to access to app again.
+
+curl kodekloud-pink.app
+
+It should work now.
 
 8. A pod named beta-pod-cka01-arch has been created in the beta-cka01-arch namespace. Inspect the logs and save all logs starting with the string ERROR in file /root/beta-pod-cka01-arch_errors on the student-node.
 
@@ -191,23 +296,23 @@ kubectl create secret generic db-secret-wl05 -n canara-wl05 --from-literal=DB_Ho
 
 After that, configure the newly created secret to the web application pod as follows: -
 
+```
 ---
-
 apiVersion: v1
 kind: Pod
 metadata:
-labels:
-run: webapp-pod-wl05
-name: webapp-pod-wl05
-namespace: canara-wl05
-spec:
-containers:
-
-- image: kodekloud/simple-webapp-mysql
+  labels:
+    run: webapp-pod-wl05
   name: webapp-pod-wl05
-  envFrom:
-  - secretRef:
-    name: db-secret-wl05
+  namespace: canara-wl05
+spec:
+  containers:
+  - image: kodekloud/simple-webapp-mysql
+    name: webapp-pod-wl05
+    envFrom:
+    - secretRef:
+        name: db-secret-wl05
+```
 
 then use the kubectl replace command: -
 
@@ -306,17 +411,19 @@ You should be able to access the app using curl http://kodekloud-ingress.app com
 ANS:
 Set context to cluster1.
 
-Create a yaml template as below:
+```
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-name: red-pv-cka03-str
+  name: red-pv-cka03-str
 spec:
-capacity:
-storage: 100Mi
-accessModes: - ReadWriteOnce
-hostPath:
-path: /opt/red-pv-cka03-str
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /opt/red-pv-cka03-str
+```
 
 Apply the template:
 kubectl apply -f <template-file-name>.yaml
