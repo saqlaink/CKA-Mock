@@ -42,36 +42,40 @@ Since you're restricting the service account from cluster-wide access to namespa
 kubectl delete clusterrolebinding blue-role-binding-cka21-arch
 
 Create a Role that specifically allows get operations on pods within the default namespace:
+
+```
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-namespace: default
-name: blue-role-cka21-arch
+  namespace: default
+  name: blue-role-cka21-arch
 rules:
-
 - apiGroups: [""]
   resources: ["pods"]
   verbs: ["get"]
+```
 
 Save this to a file named role.yaml and apply it with:
 
 kubectl apply -f role.yaml
 
 Bind the service account to the new role using a RoleBinding. This grants the service account the permissions defined in the role, but only within the default namespace:
+
+```
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-name: blue-role-binding-cka21-arch
-namespace: default
+  name: blue-role-binding-cka21-arch
+  namespace: default
 subjects:
-
 - kind: ServiceAccount
   name: blue-sa-cka21-arch
   namespace: default
-  roleRef:
+roleRef:
   kind: Role
   name: blue-role-cka21-arch
   apiGroup: rbac.authorization.k8s.io
+```
 
 Save this to a file named rolebinding.yaml and apply it with:
 
@@ -498,18 +502,20 @@ It should work now.
 ANS:
 Set context to cluster1:
 
+```
 Create a yaml template as below:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-name: apple-pvc-cka04-str
+  name: apple-pvc-cka04-str
 spec:
-volumeName: apple-pv-cka04-str
-storageClassName: manual
-accessModes: - ReadWriteOnce
-resources:
-requests:
-storage: 40Mi
+  volumeName: apple-pv-cka04-str
+  storageClassName: manual
+  accessModes: - ReadWriteOnce
+  resources:
+    requests:
+      storage: 40Mi
+```
 
 Apply the template:
 kubectl apply -f <template-file-name>.yaml

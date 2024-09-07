@@ -50,6 +50,7 @@ pod-2 ip-3
 ANS:
 The easiest way to route traffic to a specific pod is by the use of labels and selectors . List the pods along with their labels:
 
+```
 student-node ~ ➜ kubectl get pods --show-labels -n spectra-1267
 NAME READY STATUS RESTARTS AGE LABELS
 pod-12 1/1 Running 0 5m21s env=dev,mode=standard,type=external
@@ -58,6 +59,7 @@ pod-43 1/1 Running 0 5m20s env=prod,mode=exam,type=internal
 pod-23 1/1 Running 0 5m21s env=dev,mode=exam,type=external
 pod-32 1/1 Running 0 5m20s env=prod,mode=standard,type=internal
 pod-21 1/1 Running 0 5m20s env=prod,mode=exam,type=external
+```
 
 Looks like there are a lot of pods created to confuse us. But we are only concerned with the labels of pod-23 and pod-21.
 
