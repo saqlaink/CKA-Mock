@@ -365,6 +365,7 @@ kubectl get pod --context=cluster4 -n kube-system
 Now you might notice that kube-apiserver-cluster4-controlplane pod is also restarting, so we should dig into its logs or relevant events.
 
 kubectl logs -f kube-apiserver-cluster4-controlplane -n kube-system
+
 kubectl get event --field-selector involvedObject.name=kube-apiserver-cluster4-controlplane -n kube-system
 
 In events you will see this error
