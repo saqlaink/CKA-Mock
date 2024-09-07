@@ -65,10 +65,12 @@ Looks like there are a lot of pods created to confuse us. But we are only concer
 
 As we can see both the required pods have labels mode=exam,type=external in common. Let's confirm that using kubectl too:
 
-student-node ~ ➜ kubectl get pod -l mode=exam,type=external -n spectra-1267  
+```
+student-node ~ ➜ kubectl get pod -l mode=exam,type=external -n spectra-1267
 NAME READY STATUS RESTARTS AGE
 pod-23 1/1 Running 0 9m18s
 pod-21 1/1 Running 0 9m17s
+```
 
 Nice!! Now as we have figured out the labels, we can proceed further with the creation of the service:
 
@@ -76,6 +78,7 @@ student-node ~ ➜ kubectl create service clusterip service-3421-svcn -n spectra
 
 Now modify the service definition with selectors as required before applying to k8s cluster:
 
+```
 student-node ~ ➜ cat service-3421-svcn.yaml
 apiVersion: v1
 kind: Service
@@ -99,6 +102,7 @@ ports:
   type: ClusterIP
   status:
   loadBalancer: {}
+```
 
 Finally let's apply the service definition:
 
