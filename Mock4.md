@@ -189,7 +189,10 @@ Warning Failed pod/blue-dp-cka09-trb-69dd844f76-rv9z8 Error: failed to create co
 Edit the deployment again
 kubectl edit deploy blue-dp-cka09-trb
 
+```
 Under volumeMounts: -> - mountPath: /etc/nginx/nginx.conf -> name: nginx-config add subPath: nginx.conf and save the changes.
+```
+
 Finally the pod should be in running state.
 
 7. There is a sample script located at /root/service-cka25-arch.sh on the student-node.
@@ -439,12 +442,14 @@ student-node ~ ➜ ssh root@cluster1-controlplane
 
 Install etcd utility (if not installed already) and restore the backup:
 
+```
 cluster1-controlplane ~ ➜ cd /tmp
 cluster1-controlplane ~ ➜ export RELEASE=$(curl -s https://api.github.com/repos/etcd-io/etcd/releases/latest | grep tag_name | cut -d '"' -f 4)
 cluster1-controlplane ~ ➜ wget https://github.com/etcd-io/etcd/releases/download/${RELEASE}/etcd-${RELEASE}-linux-amd64.tar.gz
 cluster1-controlplane ~ ➜ tar xvf etcd-${RELEASE}-linux-amd64.tar.gz ; cd etcd-${RELEASE}-linux-amd64
 cluster1-controlplane ~ ➜ mv etcd etcdctl /usr/local/bin/
 cluster1-controlplane ~ ➜ etcdctl snapshot restore --data-dir /root/default.etcd /opt/cluster1_backup_to_restore.db
+```
 
 14. We have deployed a 2-tier web application on the cluster3 nodes in the canara-wl05 namespace. However, at the moment, the web app pod cannot establish a connection with the MySQL pod successfully.
 
