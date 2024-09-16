@@ -364,7 +364,10 @@ As the ingress controller is exposed on cluster3-controlplane using traefik serv
 
 student-node ~ ➜ ssh cluster3-controlplane
 
+```
 cluster3-controlplane:~# curl -I 172.25.0.11
+```
+
 HTTP/1.1 200 OK
 ...
 
